@@ -7,7 +7,7 @@ def load_word():
     Returns: 
            string: The secret word to be used in the spaceman guessing game
     '''
-    f = open('words.txt', 'r')
+    f = open('/Users/mtifak/Desktop/dev/words.txt', 'r')
     words_list = f.readlines()
     f.close()
 
@@ -25,7 +25,15 @@ def is_word_guessed(secret_word, letters_guessed):
         bool: True only if all the letters of secret_word are in letters_guessed, False otherwise
     '''
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
-    pass
+    counter = 0
+    for i in secret_word:
+        if i in letters_guessed:
+            counter +=1
+    if counter == len(secret_word):
+        return True
+    else:
+        return False
+    #pass
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -38,8 +46,9 @@ def get_guessed_word(secret_word, letters_guessed):
     '''
 
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
-
-    pass
+    guessed_word = [i if i in letters_guessed else '_' for i in secret_word]
+    return "".join(guessed_word)
+    #pass
 
 
 def is_guess_in_word(guess, secret_word):
@@ -52,11 +61,25 @@ def is_guess_in_word(guess, secret_word):
         bool: True if the guess is in the secret_word, False otherwise
     '''
     #TODO: check if the letter guess is in the secret word
+    if secret_word.find(guess) > 0:
+        return True
+    else:
+        return False
+    #pass
 
-    pass
-
-
-
+def checkletter():
+    while True:
+        guess = input('Please input a letter: ').lower()
+        if guess.isalpha():
+            if len(guess)>1:
+                print('That does not work : '+ guess)
+                continue
+            else:
+                return guess
+                break
+        else:
+            print('That does not work : '+ guess)
+            continue
 
 def spaceman(secret_word):
     '''
@@ -76,8 +99,42 @@ def spaceman(secret_word):
 
     #TODO: check if the game has been won or lost
 
+    wordGuessed = False
+    guess = ""
+    letters_guessed = []
+    guesses_left = len(secret_word)
 
+    while guesses_left > 0 and guesses_left <= len(secret_word) and wordGuessed is False:
+        if secret_word == get_guessed_word(secret_word, letters_guessed):
+            wordGuessed = True
+            break
+        print("You only have " + str(guesses_left) + " guesses left.")
 
+        guess = checkletter()
+
+        if guess in secret_word:
+            if guess in letters_guessed:
+                print ("You've already guessed that letter: " + get_guessed_word(secret_word, letters_guessed))
+                
+            else:
+                letters_guessed.append(guess)
+                print ('Great guess: ' + get_guessed_word(secret_word, letters_guessed))
+
+        else:
+            if guess in letters_guessed:
+                print ("You've already guessed that letter: " + get_guessed_word(secret_word, letters_guessed))
+                
+            else:
+                letters_guessed.append(guess)
+                guesses_left-= 1
+                print ('That letter is not in the word: ' + get_guessed_word(secret_word, letters_guessed))
+                
+    #Will use this for replaying game
+    if wordGuessed == True:
+        return 'Great job, you won!'
+        
+    elif guesses_left== 0:
+        print ('Too bad, you do not have any more guesses. The word was ' + secret_word)
 
 
 
