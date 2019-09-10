@@ -1,5 +1,8 @@
 import random
 
+#this boolean will decide whether or not the game is over
+ready_game = True
+
 def load_word():
     '''
     A function that reads a text file of words and randomly selects one to use as the secret word
@@ -67,19 +70,36 @@ def is_guess_in_word(guess, secret_word):
         return False
     #pass
 
-def checkletter():
+def check_letter():
     while True:
-        guess = input('Please input a letter: ').lower()
+        guess = input("Please input a letter: ").lower()
         if guess.isalpha():
             if len(guess)>1:
-                print('That does not work : '+ guess)
+                print("That does not work : " + guess)
                 continue
             else:
                 return guess
                 break
         else:
-            print('That does not work : '+ guess)
+            print("That does not work : " + guess)
             continue
+
+def new_game(play):
+ while True:
+    player_choice = input("Would you like to play again? (Y/N): ").upper()
+    if player_choice.isalpha():
+        if player_choice=="Y":
+            spaceman(secret_word)
+        elif player_choice =="N":
+            print("Good-bye!")
+            new_game == False
+            break
+        else:
+            print("That is an invalid option!")
+            continue
+    else:
+        print("Not a letter!")
+        continue
 
 def spaceman(secret_word):
     '''
@@ -110,7 +130,7 @@ def spaceman(secret_word):
             break
         print("You only have " + str(guesses_left) + " guesses left.")
 
-        guess = checkletter()
+        guess = check_letter()
 
         if guess in secret_word:
             if guess in letters_guessed:
@@ -131,13 +151,19 @@ def spaceman(secret_word):
                 
     #Will use this for replaying game
     if wordGuessed == True:
-        return 'Great job, you won!'
+        return "Great job, you won!"
+        load_word()
+        new_game(secret_word)
         
     elif guesses_left== 0:
-        print ('Too bad, you do not have any more guesses. The word was ' + secret_word)
+        print ("Too bad, you do not have any more guesses. The word was " + secret_word)
+        load_word()
+        new_game(secret_word)
+
 
 
 
 #These function calls that will start the game
-secret_word = load_word()
-spaceman(load_word())
+if ready_game == True:
+    secret_word = load_word()
+    spaceman(load_word())
