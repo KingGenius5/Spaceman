@@ -1,7 +1,5 @@
 import random
 
-#this boolean will decide whether or not the game is over
-ready_game = True
 
 def load_word():
     '''
@@ -49,7 +47,7 @@ def get_guessed_word(secret_word, letters_guessed):
     '''
 
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
-    guessed_word = [i if i in letters_guessed else '_' for i in secret_word]
+    guessed_word = [i if i in letters_guessed else ' _ ' for i in secret_word]
     return "".join(guessed_word)
     #pass
 
@@ -85,21 +83,20 @@ def check_letter():
             continue
 
 def new_game(play):
- while True:
-    player_choice = input("Would you like to play again? (Y/N): ").upper()
-    if player_choice.isalpha():
-        if player_choice=="Y":
-            spaceman(secret_word)
-        elif player_choice =="N":
+
+    replay_game = True
+
+    while replay_game == True:
+        player_choice = input("Would you like to play again? (y/n): ").lower()
+        if player_choice=="y":
+            spaceman(load_word())
+        elif player_choice == "n":
             print("Good-bye!")
-            new_game == False
+            replay_game == False
             break
         else:
             print("That is an invalid option!")
             continue
-    else:
-        print("Not a letter!")
-        continue
 
 def spaceman(secret_word):
     '''
@@ -146,16 +143,16 @@ def spaceman(secret_word):
                 
             else:
                 letters_guessed.append(guess)
-                guesses_left-= 1
+                guesses_left -= 1
                 print ('That letter is not in the word: ' + get_guessed_word(secret_word, letters_guessed))
                 
     #Will use this for replaying game
     if wordGuessed == True:
-        return "Great job, you won!"
+        print("Great job, you won!")
         load_word()
         new_game(secret_word)
         
-    elif guesses_left== 0:
+    elif guesses_left == 0:
         print ("Too bad, you do not have any more guesses. The word was " + secret_word)
         load_word()
         new_game(secret_word)
@@ -164,6 +161,5 @@ def spaceman(secret_word):
 
 
 #These function calls that will start the game
-if ready_game == True:
-    secret_word = load_word()
-    spaceman(load_word())
+secret_word = load_word()
+spaceman(load_word())
