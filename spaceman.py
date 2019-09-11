@@ -83,20 +83,7 @@ def check_letter():
             continue
 
 def new_game(play):
-
-    replay_game = True
-
-    while replay_game == True:
-        player_choice = input("Would you like to play again? (y/n): ").lower()
-        if player_choice=="y":
-            spaceman(load_word())
-        elif player_choice == "n":
-            print("Good-bye!")
-            replay_game == False
-            break
-        else:
-            print("That is an invalid option!")
-            continue
+    print("This doesn't work.")
 
 def spaceman(secret_word):
     '''
@@ -146,16 +133,28 @@ def spaceman(secret_word):
                 guesses_left -= 1
                 print ('That letter is not in the word: ' + get_guessed_word(secret_word, letters_guessed))
                 
-    #Will use this for replaying game
+    
     if wordGuessed == True:
         print("Great job, you won!")
-        load_word()
-        new_game(secret_word)
+        play_again = input("Would you like to play again? ")
+        if play_again == "y":
+            secret_word = load_word()
+            spaceman(load_word())
+        elif play_again == "n":
+            print("Good-bye.")
+        else:
+            print("Not a valid input.")
         
     elif guesses_left == 0:
         print ("Too bad, you do not have any more guesses. The word was " + secret_word)
-        load_word()
-        new_game(secret_word)
+        play_again = input("Would you like to play again? ")
+        if play_again == "y":
+            secret_word = load_word()
+            spaceman(load_word())
+        elif play_again == "n":
+            print("Good-bye.")
+        else:
+            print("Not a valid input.")
 
 
 
