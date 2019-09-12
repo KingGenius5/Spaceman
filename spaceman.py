@@ -1,5 +1,5 @@
 import random
-
+from termcolor import colored
 
 def load_word():
     '''
@@ -29,12 +29,11 @@ def is_word_guessed(secret_word, letters_guessed):
     counter = 0
     for i in secret_word:
         if i in letters_guessed:
-            counter +=1
+            counter += 1
     if counter == len(secret_word):
         return True
     else:
         return False
-    #pass
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -47,9 +46,20 @@ def get_guessed_word(secret_word, letters_guessed):
     '''
 
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
-    guessed_word = [i if i in letters_guessed else ' _ ' for i in secret_word]
-    return "".join(guessed_word)
-    #pass
+    
+    #Had this piece of code at first but rewrote after Jess's lesson about code readability being better for more efficent and higher quality programming
+    #guessed_word = [i if i in letters_guessed else ' _ ' for i in secret_word]
+    #return "".join(guessed_word)
+
+    guessed_word = []
+    #i loops through each letter in the secret_word and checks if it is in letters they already guessed, then appending that to guessed_word
+    for i in secret_word:
+        if i in letters_guessed:
+            guessed_word.append(i)
+        else:
+            guessed_word.append(' _ ')
+    #From python doc, this lets us display all the list items in guessed_word as a string
+    return ''.join(guessed_word)
 
 
 def is_guess_in_word(guess, secret_word):
@@ -66,24 +76,25 @@ def is_guess_in_word(guess, secret_word):
         return True
     else:
         return False
-    #pass
 
-def check_letter():
+#TODO: Ask the player to guess one letter per round and check that it is only one letter
+def check_double_entry():
+    '''
+    A function that checks to see if the user has guessed only an indivual letter at each time (per input)
+    If they enter a number, symbol, or more than one letter, it will return as invalid input
+    '''
     while True:
-        guess = input("Please input a letter: ").lower()
-        if guess.isalpha():
+        guess = input("Please enter a letter you think is in the mystery word: ").lower()
+        if guess.isalpha():#checks to see if only alphabetical values are inputted (no numbers or symbols)
             if len(guess)>1:
-                print("That does not work : " + guess)
+                print("You can only enter one letter at a time : " + guess)
                 continue
             else:
                 return guess
                 break
         else:
-            print("That does not work : " + guess)
+            print("You can only enter one letter at a time : " + guess)
             continue
-
-def new_game(play):
-    print("This doesn't work.")
 
 def spaceman(secret_word):
     '''
@@ -91,17 +102,6 @@ def spaceman(secret_word):
     Args:
       secret_word (string): the secret word to guess.
     '''
-
-
-    #TODO: show the player information about the game according to the project spec
-
-    #TODO: Ask the player to guess one letter per round and check that it is only one letter
-
-    #TODO: Check if the guessed letter is in the secret or not and give the player feedback
-
-    #TODO: show the guessed word so far
-
-    #TODO: check if the game has been won or lost
 
     wordGuessed = False
     guess = ""
@@ -112,31 +112,39 @@ def spaceman(secret_word):
         if secret_word == get_guessed_word(secret_word, letters_guessed):
             wordGuessed = True
             break
-        print("You only have " + str(guesses_left) + " guesses left.")
+        print("You currently have " + str(guesses_left) + " guesses left.")
 
-        guess = check_letter()
+        guess = check_double_entry()
 
+        #TODO: show the guessed word so far
+        #TODO: Check if the guessed letter is in the secret or not and give the player feedback
         if guess in secret_word:
             if guess in letters_guessed:
                 print ("You've already guessed that letter: " + get_guessed_word(secret_word, letters_guessed))
+                print("\n"+40*"-"+"\n")
                 
             else:
                 letters_guessed.append(guess)
-                print ('Great guess: ' + get_guessed_word(secret_word, letters_guessed))
+                print("Letters guessed: " + ', '.join(letters_guessed))
+                print ('Awesome guess: ' + get_guessed_word(secret_word, letters_guessed))
+                print("\n"+40*"-"+"\n")
 
         else:
             if guess in letters_guessed:
                 print ("You've already guessed that letter: " + get_guessed_word(secret_word, letters_guessed))
+                print("\n"+40*"-"+"\n")
                 
             else:
                 letters_guessed.append(guess)
+                print("Letters guessed: " + ', '.join(letters_guessed))
                 guesses_left -= 1
                 print ('That letter is not in the word: ' + get_guessed_word(secret_word, letters_guessed))
+                print("\n"+40*"-"+"\n")
                 
-    
+    #TODO: check if the game has been won or lost
     if wordGuessed == True:
-        print("Great job, you won!")
-        play_again = input("Would you like to play again? ")
+        print("Ay Congratulations, you WON!")
+        play_again = input("Would you like to play again? (y/n) ").lower()
         if play_again == "y":
             secret_word = load_word()
             spaceman(load_word())
@@ -146,18 +154,21 @@ def spaceman(secret_word):
             print("Not a valid input.")
         
     elif guesses_left == 0:
-        print ("Too bad, you do not have any more guesses. The word was " + secret_word)
-        play_again = input("Would you like to play again? ")
+        print ("YOU LOST. Alexa, this is so sad. The word was " + secret_word)
+        play_again = input("Would you like to play again? (y/n) ").lower()
         if play_again == "y":
             secret_word = load_word()
             spaceman(load_word())
         elif play_again == "n":
-            print("Good-bye.")
+            print("Good-bye!")
         else:
             print("Not a valid input.")
 
-
-
+#TODO: show the player information about the game according to the project spec
+print("\n"+50*"~")
+print(13*"*"+" WELCOME TO SPACEMAN!!! "+13*"*")
+print(50*"~")
+print("Let's play a word guessing game so we can save the spaceman.\n")
 
 #These function calls that will start the game
 secret_word = load_word()
