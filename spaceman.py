@@ -8,7 +8,7 @@ def load_word():
     Returns: 
            string: The secret word to be used in the spaceman guessing game
     '''
-    f = open('/Users/mtifak/Desktop/dev/words.txt', 'r')
+    f = open('words.txt', 'r')
     words_list = f.readlines()
     f.close()
 
@@ -143,7 +143,7 @@ def spaceman(secret_word):
                 
     #TODO: check if the game has been won or lost
     if wordGuessed == True:
-        print("Ay Congratulations, you WON!")
+        print("Ay" + colored("Congratulations", 'cyan') + ", you WON!")
         play_again = input("Would you like to play again? (y/n) ").lower()
         if play_again == "y":
             secret_word = load_word()
@@ -154,7 +154,7 @@ def spaceman(secret_word):
             print("Not a valid input.")
         
     elif guesses_left == 0:
-        print ("YOU LOST. Alexa, this is so sad. The word was " + secret_word)
+        print (colored("YOU LOST.", 'red') + " Alexa, this is so sad. The word was " + secret_word)
         play_again = input("Would you like to play again? (y/n) ").lower()
         if play_again == "y":
             secret_word = load_word()
@@ -166,7 +166,7 @@ def spaceman(secret_word):
 
 #TODO: show the player information about the game according to the project spec
 print("\n"+50*"~")
-print(13*"*"+" WELCOME TO SPACEMAN!!! "+13*"*")
+print(13*"*"+colored(" WELCOME TO SPACEMAN!!! ",'green')+13*"*")
 print(50*"~")
 print("Let's play a word guessing game so we can save the spaceman.\n")
 
