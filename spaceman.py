@@ -8,7 +8,7 @@ def load_word():
     Returns: 
            string: The secret word to be used in the spaceman guessing game
     '''
-    f = open('words.txt', 'r')
+    f = open('/Users/mtifak/Desktop/dev/words.txt', 'r')
     words_list = f.readlines()
     f.close()
 
@@ -34,6 +34,11 @@ def is_word_guessed(secret_word, letters_guessed):
         return True
     else:
         return False
+
+#TEST
+def test_is_word_guessed():
+    assert is_word_guessed('flamboyant',['f','l','a','m','b','o','y','n','t']) == True
+    assert is_word_guessed('flamboyant',['a','e','i','o','u','f','z']) == False
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -61,6 +66,11 @@ def get_guessed_word(secret_word, letters_guessed):
     #From python doc, this lets us display all the list items in guessed_word as a string
     return ''.join(guessed_word)
 
+#TEST
+def test_get_guessed_word():
+    assert get_guessed_word("flamboyant",['a','o','t','f','z','h']) == "f _ a _ _ o _ a _ t"
+    assert get_guessed_word("flamboyant",['f','l','m','n']) == "fl _ m _ _ _ _ n _"
+
 
 def is_guess_in_word(guess, secret_word):
     '''
@@ -76,6 +86,11 @@ def is_guess_in_word(guess, secret_word):
         return True
     else:
         return False
+
+#TEST
+def test_is_guess_in_word():
+    assert is_guess_in_word("a", "flamboyant") == True
+    assert is_guess_in_word("z", "flamboyant") == False
 
 #TODO: Ask the player to guess one letter per round and check that it is only one letter
 def check_double_entry():
